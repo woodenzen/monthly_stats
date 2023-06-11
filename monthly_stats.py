@@ -68,7 +68,7 @@ month_names = [datetime(2000, i, 1).strftime('%b') for i in range(1, 13)]
 
 # Create a table with the month names as the first column
 table = pt.PrettyTable()
-table.field_names = ['Month'] + [str(y) for y in range(today.year-5, today.year+1)]
+table.field_names = ['Stats'] + [str(y) for y in range(today.year-5, today.year+1)]
 for i in range(12):
     table.add_row([month_names[i]] + [str(counts_by_year[j][i]) for j in range(6)])
 
