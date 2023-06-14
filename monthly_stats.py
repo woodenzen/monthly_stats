@@ -50,16 +50,32 @@ def count_files_zettelkasten(partial_UID):
                 count += 1 # increments the counter variable
     return count # returns the count of files
 
-# Generate year and month strings for the past 5 years
+# title_convention = input("Do your notes follow the convention UID-Title.md [1] or Title-UID.md [2]? ")
+# print("Enter a 1 or 2.")
+# if title_convention == "1":
+#     print("You use the convention UID-Title.md")
+# elif title_convention == "2":
+#     print("You use the convention Title-UID.md.")
+
+print("What is the oldest year you want stats for? ")
+stat_years = input("Enter the year [XXXX]. " )
+stat_years = int(stat_years)
+
+year = int(datetime.today().year)
+print("The current year is", year)
+oldest_year = year - stat_years
+
+
+# Generate year and month strings for the past stat_years years
 today = datetime.today()
 partial_UIDs = []
-for y in range(today.year-5, today.year+1): # 5 years ago to this year
+for y in range(today.year-oldest_year, today.year+1): # stat_years years ago to this year
     for m in range(1, 13):
         partial_UIDs.append(f" {y}{m:02d}")
 
 # Create a list of lists to store the counts for each year
 counts_by_year = []
-for i in range(6):
+for i in range(oldest_year+1):
     year_counts = [count_files_zettelkasten(partial_UIDs[j]) for j in range(i*12, (i+1)*12)]
     counts_by_year.append(year_counts)
 
@@ -68,10 +84,10 @@ month_names = [datetime(2000, i, 1).strftime('%b') for i in range(1, 13)]
 
 # Create a table with the month names as the first column
 table = pt.PrettyTable()
-table.field_names = ['Stats'] + [str(y) for y in range(today.year-5, today.year+1)]
+table.field_names = ['Stats'] + [str(y) for y in range(today.year-oldest_year, today.year+1)]
 
 def add_month_row(month, divider=False):
-    table.add_row([month_names[month]] + [str(counts_by_year[year][month]) for year in range(6)],
+    table.add_row([month_names[month]] + [str(counts_by_year[year][month]) for year in range(oldest_year+1)],
                   divider=divider)
 
 # Jan--Nov (without divider), December with divider
@@ -81,7 +97,7 @@ add_month_row(11, divider=True)
 
 # Append annual sum
 table.add_row(['Total']
-            + [str(sum(counts_by_year[year])) for year in range(6)])
+            + [str(sum(counts_by_year[year])) for year in range(oldest_year+1)])
 
 # Print the table
 print(table)
