@@ -84,4 +84,4 @@ table.add_row(['Total']
             + [str(sum(counts_by_year[year])) for year in range(6)])
 
 # Print the table
-print(table)  
+print(table)
