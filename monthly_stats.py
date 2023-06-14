@@ -69,8 +69,19 @@ month_names = [datetime(2000, i, 1).strftime('%b') for i in range(1, 13)]
 # Create a table with the month names as the first column
 table = pt.PrettyTable()
 table.field_names = ['Stats'] + [str(y) for y in range(today.year-5, today.year+1)]
-for i in range(12):
-    table.add_row([month_names[i]] + [str(counts_by_year[j][i]) for j in range(6)])
+
+def add_month_row(month, divider=False):
+    table.add_row([month_names[month]] + [str(counts_by_year[year][month]) for year in range(6)],
+                  divider=divider)
+
+# Jan--Nov (without divider), December with divider
+for month in range(11):
+    add_month_row(month, divider=False)
+add_month_row(11, divider=True)
+
+# Append annual sum
+table.add_row(['Total']
+            + [str(sum(counts_by_year[year])) for year in range(6)])
 
 # Print the table
-print(table)  
+print(table)
