@@ -1,8 +1,8 @@
-import os, pathlib, re
+import os, re
 import prettytable as pt
 from datetime import datetime
 from plistlib import load
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 
 ####
 # Function for finding the path to The Archive
@@ -25,7 +25,10 @@ def TheArchivePath():
         # 'archiveURL' is the key that pairs with the zk path
         path = urlparse(pl['archiveURL']) 
     # path is the part of the path that is formatted for use as a path.
-    return (path.path) 
+        path = urlparse(pl['archiveURL']).path
+        decoded_path = unquote(path) 
+    return unquote(path) 
+ 
 
 ####
 # Function for finding monthly stats
@@ -44,7 +47,7 @@ def count_files_zettelkasten(partial_UID):
     directory = TheArchivePath() # gets the path to the directory
     count = 0 # initializes the counter 
     for filename in os.listdir(directory): # iterates over the files in the directory
-        if re.search(f"{partial_UID}\d{{2}}.*", filename): # checks if the partial_UID is in the filename
+        if re.search(f".*{partial_UID}\d{{2}}.*", filename): # checks if the partial_UID is in the filename
             file_path = os.path.join(directory, filename) # constructs the full file path
             if os.path.isfile(file_path): # checks if the file is a regular file
                 count += 1 # increments the counter variable
@@ -52,19 +55,16 @@ def count_files_zettelkasten(partial_UID):
 
 print("What is the oldest year you want stats for? ")
 stat_years = input("Enter the year [XXXX]. " )
+
+# Test if input is valid
+while not re.match(r'^\d{4}$', stat_years) or int(stat_years) < 2000 or int(stat_years) > 2300:
+    print("Invalid input. Please enter a valid year.")
+    stat_years = input("Enter the year [XXXX]: ")
 stat_years = int(stat_years)
 
 year = int(datetime.today().year)
 print("The current year is", year)
 oldest_year = year - stat_years
-
-#print(f"My note titles are formatted as UID-Title.md[1] or Title-UID.md[2].")
-# title_convention = input("Enter a 1 or 2. ")
-# title_convention = int(title_convention)
-# if title_convention == 1:
-#     title_convention = f"{y}{m:02d}
-# elif title_convention == 2:
-#     title_convention = f" {y}{m:02d}
 
 # Generate year and month strings for the past stat_years years
 today = datetime.today()
