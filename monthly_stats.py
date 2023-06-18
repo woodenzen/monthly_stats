@@ -2,7 +2,7 @@ import os, re
 import prettytable as pt
 from datetime import datetime
 from plistlib import load
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 
 ####
 # Function for finding the path to The Archive
@@ -25,7 +25,10 @@ def TheArchivePath():
         # 'archiveURL' is the key that pairs with the zk path
         path = urlparse(pl['archiveURL']) 
     # path is the part of the path that is formatted for use as a path.
-    return (path.path) 
+        path = urlparse(pl['archiveURL']).path
+        decoded_path = unquote(path) 
+    return unquote(path) 
+ 
 
 ####
 # Function for finding monthly stats
@@ -50,9 +53,13 @@ def count_files_zettelkasten(partial_UID):
                 count += 1 # increments the counter variable
     return count # returns the count of files
 
-# Ask the user for the oldest year they want stats for
 print("What is the oldest year you want stats for? ")
 stat_years = input("Enter the year [XXXX]. " )
+
+# Test if input is valid
+while not re.match(r'^\d{4}$', stat_years) or int(stat_years) < 2000 or int(stat_years) > 2300:
+    print("Invalid input. Please enter a valid year.")
+    stat_years = input("Enter the year [XXXX]: ")
 stat_years = int(stat_years)
 
 # Calculate the oldest year
