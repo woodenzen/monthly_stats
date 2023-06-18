@@ -47,7 +47,7 @@ def count_files_zettelkasten(partial_UID):
     directory = TheArchivePath() # gets the path to the directory
     count = 0 # initializes the counter 
     for filename in os.listdir(directory): # iterates over the files in the directory
-        if re.search(f".*{partial_UID}\d{{2}}.*", filename): # checks if the partial_UID is in the filename
+        if re.search(f".*{partial_UID}\d{{4}}.*", filename): # checks if the partial_UID is in the filename
             file_path = os.path.join(directory, filename) # constructs the full file path
             if os.path.isfile(file_path): # checks if the file is a regular file
                 count += 1 # increments the counter variable
