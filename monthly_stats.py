@@ -1,4 +1,4 @@
-import os, pathlib
+import os, pathlib, re
 import prettytable as pt
 from datetime import datetime
 from plistlib import load
@@ -44,18 +44,11 @@ def count_files_zettelkasten(partial_UID):
     directory = TheArchivePath() # gets the path to the directory
     count = 0 # initializes the counter 
     for filename in os.listdir(directory): # iterates over the files in the directory
-        if partial_UID in filename: # checks if the partial_UID is in the filename
+        if re.search(f"{partial_UID}\d{{2}}.*", filename): # checks if the partial_UID is in the filename
             file_path = os.path.join(directory, filename) # constructs the full file path
             if os.path.isfile(file_path): # checks if the file is a regular file
                 count += 1 # increments the counter variable
     return count # returns the count of files
-
-# title_convention = input("Do your notes follow the convention UID-Title.md [1] or Title-UID.md [2]? ")
-# print("Enter a 1 or 2.")
-# if title_convention == "1":
-#     print("You use the convention UID-Title.md")
-# elif title_convention == "2":
-#     print("You use the convention Title-UID.md.")
 
 print("What is the oldest year you want stats for? ")
 stat_years = input("Enter the year [XXXX]. " )
@@ -65,13 +58,20 @@ year = int(datetime.today().year)
 print("The current year is", year)
 oldest_year = year - stat_years
 
+#print(f"My note titles are formatted as UID-Title.md[1] or Title-UID.md[2].")
+# title_convention = input("Enter a 1 or 2. ")
+# title_convention = int(title_convention)
+# if title_convention == 1:
+#     title_convention = f"{y}{m:02d}
+# elif title_convention == 2:
+#     title_convention = f" {y}{m:02d}
 
 # Generate year and month strings for the past stat_years years
 today = datetime.today()
 partial_UIDs = []
 for y in range(today.year-oldest_year, today.year+1): # stat_years years ago to this year
     for m in range(1, 13):
-        partial_UIDs.append(f" {y}{m:02d}")
+        partial_UIDs.append(f"{y}{m:02d}")
 
 # Create a list of lists to store the counts for each year
 counts_by_year = []
