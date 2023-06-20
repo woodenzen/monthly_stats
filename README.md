@@ -1,5 +1,12 @@
 # Monthly Stats
 
+## ChangeLog
+
+v.2
+
+- Reading filenames into a dictionary for speed
+- Limiting the date range to 2000-2999
+
 Example of output.  
 
 
