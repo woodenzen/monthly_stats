@@ -39,7 +39,8 @@ pattern = r'20\d{10}'
 
 # Loop through all the files in the directory
 for filename in os.listdir(directory):
-    if filename.endswith(".md"): 
+    if filename.endswith(".md") or filename.endswith(".txt"): 
+    
     # Extract the UID from the filename using the regular expression
         match = re.search(pattern, filename)
         if match:

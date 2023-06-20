@@ -6,6 +6,7 @@ v.2
 
 - Reading filenames into a dictionary for speed
 - Limiting the date range to 2000-2999
+- Added the ability to scan a directory of files with the extension .md or .txt
 
 Example of output.  
 
