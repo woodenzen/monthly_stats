@@ -1,5 +1,6 @@
 # Monthly Stats
 
+Plain Text for the WIN!
 ## ChangeLog
 
 v.2
