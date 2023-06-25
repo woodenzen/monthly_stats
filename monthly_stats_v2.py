@@ -7,6 +7,7 @@ from prettytable import PrettyTable
 ####
 # Function for finding the path to The Archive
 #####
+
 def TheArchivePath():
     """
     Find the path to The Archive's plist file.
